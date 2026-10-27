@@ -1,4 +1,4 @@
-# Time Organizer
+# GM-Time-Organizer
 
 A **portable, offline, single-user time organizer** for Windows. Plan your days on an hourly timeline, track recurring tasks and habits, and see where your time actually goes — all from a folder you can carry on a USB stick.
 
@@ -8,7 +8,7 @@ No installer. No account. No cloud. No telemetry. Your data lives in a `data/` f
 
 ## Why this exists
 
-Most planner apps want your email, your subscription, and your data on their server. This one wants nothing. Double-click `start.bat` (or `TimeOrganizer.exe` if built) and you're planning in 2 seconds. Copy the folder to a USB stick and your whole planner goes with it.
+Most planner apps want your email, your subscription, and your data on their server. This one wants nothing. Double-click `start.bat` (or `GM-Time-Organizer.exe` if built) and you're planning in 2 seconds. Copy the folder to a USB stick and your whole planner goes with it.
 
 ---
 
@@ -79,7 +79,7 @@ Most planner apps want your email, your subscription, and your data on their ser
    npm install
    npm run build
    ```
-3. Open `dist/win-unpacked/TimeOrganizer.exe`
+3. Open `dist/win-unpacked/GM-Time-Organizer.exe`
 4. Copy `dist/win-unpacked/` anywhere — that's your portable app.
 
 ---

@@ -103,7 +103,7 @@ function createWindow() {
     minWidth: 900,
     minHeight: 600,
     backgroundColor: '#16150F',
-    title: 'Time Organizer',
+    title: 'GM-Time-Organizer',
     show: false,
     autoHideMenuBar: true,
     webPreferences: {

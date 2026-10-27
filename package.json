@@ -1,5 +1,5 @@
 {
-  "name": "time-organizer",
+  "name": "gm-time-organizer",
   "version": "0.2.0",
   "private": true,
   "description": "Portable, offline, single-user time organizer for Windows. Hourly timeline, recurring blocks, tasks, habits, templates, and stats. Zero runtime dependencies.",
@@ -19,7 +19,7 @@
   },
   "build": {
     "appId": "com.timeorganizer.app",
-    "productName": "TimeOrganizer",
+    "productName": "GM-Time-Organizer",
     "copyright": "Time Organizer",
     "directories": {
       "output": "dist"
@@ -37,7 +37,9 @@
       "target": [
         {
           "target": "dir",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     }

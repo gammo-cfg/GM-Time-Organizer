@@ -1,0 +1,286 @@
+/* =====================================================================
+   Day timeline — v3.1.
+   One authored entrance: hour labels cascade in, track fades up, blocks
+   stagger after the shell has arrived, the now-line draws itself last.
+   Suppressed on save via .timeline.skip-entrance.
+   ===================================================================== */
+
+:root {
+  --hour-height: 60px;
+  --timeline-gutter: 56px;
+  --timeline-pad-x: 4px;
+}
+
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--timeline-gutter) 1fr;
+  border-top: 1px solid var(--border);
+  background: transparent;
+}
+
+/* ---------- Hour labels ---------- */
+.timeline-hours {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-11);
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  padding-top: 0;
+  user-select: none;
+}
+.timeline-hours .hour-label {
+  height: var(--hour-height);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: 10px;
+  transform: translateY(-6px);
+  animation: hour-label-in 260ms var(--ease-out-expo) both;
+}
+.timeline-hours .hour-label:nth-child(1) { animation-delay: 20ms; }
+.timeline-hours .hour-label:nth-child(2) { animation-delay: 45ms; }
+.timeline-hours .hour-label:nth-child(3) { animation-delay: 70ms; }
+.timeline-hours .hour-label:nth-child(4) { animation-delay: 95ms; }
+.timeline-hours .hour-label:nth-child(5) { animation-delay: 120ms; }
+.timeline-hours .hour-label:nth-child(6) { animation-delay: 145ms; }
+.timeline-hours .hour-label:nth-child(7) { animation-delay: 170ms; }
+.timeline-hours .hour-label:nth-child(8) { animation-delay: 195ms; }
+.timeline-hours .hour-label:nth-child(n+9) { animation-delay: 220ms; }
+@keyframes hour-label-in {
+  from { opacity: 0; transform: translateY(-6px) translateX(-6px); }
+  to   { opacity: 1; transform: translateY(-6px) translateX(0); }
+}
+
+/* ---------- Track ---------- */
+.timeline-track {
+  position: relative;
+  padding: 0 var(--timeline-pad-x);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--grid-line) 0 1px,
+    transparent 1px var(--hour-height)
+  );
+  animation: track-fade 380ms var(--ease-out-expo) 40ms both;
+}
+@keyframes track-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.timeline-track .hour-now {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--accent-bg);
+  pointer-events: none;
+  border-radius: 0;
+  animation: fade-in 400ms var(--ease-out-expo) 300ms both;
+}
+
+/* ---------- Now line — draws in last as the peak of the sequence ---------- */
+.timeline-track .now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1.5px solid var(--accent);
+  pointer-events: none;
+  z-index: 3;
+  animation: now-line-draw 500ms var(--ease-out-expo) 520ms both;
+}
+.timeline-track .now-line::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -4px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+}
+@keyframes now-line-draw {
+  from { opacity: 0; clip-path: inset(-10px 100% -10px -10px); }
+  to   { opacity: 1; clip-path: inset(-10px -10px -10px -10px); }
+}
+
+/* ---------- Skip the orchestrated entrance on data refreshes ---------- */
+.timeline.skip-entrance .timeline-hours .hour-label,
+.timeline.skip-entrance .timeline-track,
+.timeline.skip-entrance .timeline-track .hour-now,
+.timeline.skip-entrance .timeline-track .now-line,
+.timeline.skip-entrance .timeline-track .block {
+  animation: none !important;
+}
+
+/* ---------- Block ---------- */
+.block {
+  --c: var(--cat-slate);
+  position: absolute;
+  background: color-mix(in srgb, var(--c) 15%, transparent);
+  border-left: 2px solid var(--c);
+  border-radius: var(--r-sm);
+  padding: 6px 9px;
+  overflow: hidden;
+  cursor: grab;
+  z-index: 2;
+  color: var(--text);
+  text-align: left;
+  font-family: inherit;
+  box-sizing: border-box;
+  min-height: 12px;
+  transition: background-color var(--dur-base) var(--ease-out-expo),
+              box-shadow var(--dur-slow) var(--ease-out-expo),
+              transform var(--dur-slow) var(--ease-out-expo);
+  animation: block-mount 280ms var(--ease-out-expo) both;
+}
+@keyframes block-mount {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Stagger: blocks arrive after the shell has settled (delays 250ms+) */
+.timeline-track .block:nth-of-type(1) { animation-delay: 250ms; }
+.timeline-track .block:nth-of-type(2) { animation-delay: 275ms; }
+.timeline-track .block:nth-of-type(3) { animation-delay: 300ms; }
+.timeline-track .block:nth-of-type(4) { animation-delay: 325ms; }
+.timeline-track .block:nth-of-type(5) { animation-delay: 350ms; }
+.timeline-track .block:nth-of-type(6) { animation-delay: 375ms; }
+.timeline-track .block:nth-of-type(7) { animation-delay: 400ms; }
+.timeline-track .block:nth-of-type(n+8) { animation-delay: 425ms; }
+
+.block:hover:not(.is-dragging) {
+  background: color-mix(in srgb, var(--c) 26%, transparent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1.5px);
+  z-index: 4;
+}
+.block:active:not(.is-dragging) {
+  transform: translateY(0);
+  transition-duration: var(--dur-ultra);
+}
+.block:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.block.is-dragging {
+  cursor: grabbing;
+  z-index: 10;
+  background: color-mix(in srgb, var(--c) 24%, transparent);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition: box-shadow var(--dur-base) var(--ease-out-expo);
+  animation: none;
+  will-change: top, height;
+}
+[data-theme="light"] .block.is-dragging {
+  box-shadow: 0 12px 32px rgba(28, 27, 23, 0.16), 0 4px 12px rgba(28, 27, 23, 0.08);
+}
+.block.is-dragging .handle { opacity: 0; }
+
+body.is-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.block .block-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+  line-height: 1.25;
+  pointer-events: none;
+}
+.block .block-time {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.block.compact { padding: 4px 8px; }
+.block.compact .block-title,
+.block.compact .block-time { display: inline; white-space: nowrap; }
+.block.compact .block-time { margin-left: 6px; }
+
+.block.mini { padding: 2px 8px; }
+.block.mini .block-time { display: none; }
+.block.mini .block-title { font-size: 11.5px; line-height: 1.4; }
+
+.block[data-cat="slate"], .block.cat-slate { --c: var(--cat-slate); }
+.block[data-cat="sage"],  .block.cat-sage  { --c: var(--cat-sage);  }
+.block[data-cat="clay"],  .block.cat-clay  { --c: var(--cat-clay);  }
+.block[data-cat="rose"],  .block.cat-rose  { --c: var(--cat-rose);  }
+.block[data-cat="gold"],  .block.cat-gold  { --c: var(--cat-gold);  }
+.block[data-cat="plum"],  .block.cat-plum  { --c: var(--cat-plum);  }
+.block[data-cat="teal"],  .block.cat-teal  { --c: var(--cat-teal);  }
+.block[data-cat="olive"], .block.cat-olive { --c: var(--cat-olive); }
+
+.block .handle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: ns-resize;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out-expo);
+}
+.block:hover .handle { opacity: 0.5; }
+.block .handle:hover { opacity: 1; }
+.block .handle.top { top: 0; }
+.block .handle.bottom { bottom: 0; }
+.block .handle::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background: var(--text-faint);
+  border-radius: var(--r-xs);
+  transform: translate(-50%, -50%);
+  transition: width var(--dur-fast) var(--ease-out-expo),
+              background-color var(--dur-fast) var(--ease-out-expo);
+}
+.block .handle:hover::before {
+  width: 28px;
+  background: var(--accent);
+}
+
+.block.is-selected {
+  box-shadow: 0 0 0 1.5px var(--accent);
+}
+
+.timeline-allday {
+  display: grid;
+  grid-template-columns: var(--timeline-gutter) 1fr;
+  border-bottom: 1px solid var(--border-soft);
+  padding: var(--sp-3) 0;
+  gap: var(--sp-3);
+  min-height: 0;
+}
+.timeline-allday-label {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 3px;
+}
+.timeline-allday-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}

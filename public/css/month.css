@@ -1,0 +1,125 @@
+/* =====================================================================
+   Month view — v2. Cell hover tint + smoother transitions.
+   ===================================================================== */
+
+.month-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  transition: border-color var(--dur-base) var(--ease-out-expo);
+}
+
+.month-head {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.month-head-label {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+  padding: var(--sp-3);
+  text-align: center;
+  border-left: 1px solid var(--border-soft);
+  user-select: none;
+}
+.month-head-label:first-child { border-left: none; }
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(104px, 1fr);
+}
+.month-cell {
+  border-left: 1px solid var(--border-soft);
+  border-top: 1px solid var(--border-soft);
+  padding: var(--sp-2) var(--sp-3);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+  transition: background-color var(--dur-fast) var(--ease-out-expo),
+              box-shadow var(--dur-base) var(--ease-out-expo);
+}
+.month-cell:nth-child(7n+1) { border-left: none; }
+.month-cell:hover {
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.month-cell.other { background: var(--surface-2); }
+.month-cell.other .month-day { color: var(--text-faint); font-weight: 400; }
+.month-cell.today {
+  background: var(--accent-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.month-day {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-12);
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  line-height: 1.2;
+}
+.month-cell.today .month-day { color: var(--accent); }
+.month-count {
+  font-size: var(--fs-10);
+  color: var(--text-faint);
+  font-weight: 500;
+}
+
+.month-mini-block {
+  --c: var(--cat-slate);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 5px;
+  font-size: var(--fs-11);
+  line-height: 1.4;
+  color: var(--text);
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--c) 16%, transparent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  transition: background-color var(--dur-fast) var(--ease-out-expo);
+}
+.month-cell:hover .month-mini-block {
+  background: color-mix(in srgb, var(--c) 24%, transparent);
+}
+.month-mini-block .mm-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--c);
+  flex-shrink: 0;
+}
+.month-mini-block .mm-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.month-mini-block[data-cat="slate"] { --c: var(--cat-slate); }
+.month-mini-block[data-cat="sage"]  { --c: var(--cat-sage); }
+.month-mini-block[data-cat="clay"]  { --c: var(--cat-clay); }
+.month-mini-block[data-cat="rose"]  { --c: var(--cat-rose); }
+.month-mini-block[data-cat="gold"]  { --c: var(--cat-gold); }
+.month-mini-block[data-cat="plum"]  { --c: var(--cat-plum); }
+.month-mini-block[data-cat="teal"]  { --c: var(--cat-teal); }
+.month-mini-block[data-cat="olive"] { --c: var(--cat-olive); }
+
+.month-more {
+  font-size: var(--fs-10);
+  color: var(--text-muted);
+  padding-left: 4px;
+  font-weight: 500;
+}

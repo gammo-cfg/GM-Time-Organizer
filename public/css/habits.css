@@ -1,0 +1,158 @@
+/* =====================================================================
+   Habits — v2. Hover lift + done pulse + smoother streak transition.
+   ===================================================================== */
+
+.habit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.habit-header {
+  display: grid;
+  grid-template-columns: 1fr repeat(7, 34px) 60px;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border-soft);
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+  align-items: center;
+}
+.habit-header .hc-day {
+  text-align: center;
+  user-select: none;
+}
+.habit-header .hc-day.today { color: var(--accent); }
+.habit-header .hc-streak { text-align: right; }
+
+.habit-row {
+  display: grid;
+  grid-template-columns: 1fr repeat(7, 34px) 60px;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  align-items: center;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background-color var(--dur-fast) var(--ease-out-expo);
+}
+.habit-row:hover { background: var(--surface-2); }
+.habit-row:last-child { border-bottom: none; }
+
+.habit-name {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-13);
+  color: var(--text);
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out-expo);
+}
+.habit-name:hover { color: var(--accent); }
+.habit-name .habit-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-xs);
+  flex-shrink: 0;
+  background: var(--c);
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.habit-row:hover .habit-dot { transform: scale(1.15); }
+
+.habit-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 26px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  cursor: pointer;
+  position: relative;
+  font-family: inherit;
+  padding: 0;
+  transition: background-color var(--dur-fast) var(--ease-out-expo),
+              border-color var(--dur-fast) var(--ease-out-expo),
+              transform var(--dur-base) var(--ease-out-expo);
+}
+.habit-cell:hover:not(:disabled) {
+  border-color: var(--c, var(--border-strong));
+  transform: scale(1.04);
+}
+.habit-cell:active:not(:disabled) {
+  transform: scale(0.96);
+  transition-duration: var(--dur-ultra);
+}
+.habit-cell.today {
+  border-color: var(--border-strong);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+.habit-cell.done {
+  background: var(--c, var(--accent));
+  border-color: var(--c, var(--accent));
+  animation: cell-pulse 320ms var(--ease-spring);
+}
+@keyframes cell-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.habit-cell.done::after {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid var(--accent-fg);
+  border-bottom: 2px solid var(--accent-fg);
+  transform: rotate(-45deg) translateY(-1px);
+  opacity: 0.9;
+}
+.habit-cell.future {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+.habit-cell.skipped {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent 0 3px,
+    var(--border-soft) 3px 4px
+  );
+}
+
+.habit-streak {
+  text-align: right;
+  font-size: var(--fs-12);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+.habit-streak .streak-n {
+  font-weight: 600;
+  color: var(--text);
+  font-size: var(--fs-13);
+  transition: color var(--dur-base) var(--ease-out-expo);
+}
+.habit-streak .streak-u {
+  font-size: var(--fs-10);
+  color: var(--text-faint);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .habit-header,
+  .habit-row {
+    grid-template-columns: 1fr repeat(7, 26px) 48px;
+  }
+  .habit-cell { width: 26px; }
+}

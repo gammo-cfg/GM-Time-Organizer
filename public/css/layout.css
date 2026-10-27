@@ -1,0 +1,191 @@
+/* =====================================================================
+   Layout — v2. Animated rail indicator + refined nav item hover.
+   ===================================================================== */
+
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.rail {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: var(--sp-7) var(--sp-5) var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.rail-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 0 var(--sp-2) var(--sp-3);
+}
+.rail-mark {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  position: relative;
+  flex-shrink: 0;
+}
+.rail-mark::after {
+  content: "";
+  position: absolute;
+  inset: 6px 5px auto 5px;
+  height: 1px;
+  background: var(--accent-fg);
+  box-shadow: 0 4px 0 var(--accent-fg);
+  opacity: 0.9;
+}
+.rail-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-18);
+  letter-spacing: var(--ls-tight);
+  color: var(--text);
+}
+
+.rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.rail-section-label {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+  padding: var(--sp-2) var(--sp-3);
+  margin-top: var(--sp-3);
+}
+.rail-sep {
+  height: 1px;
+  background: var(--border);
+  margin: var(--sp-3) var(--sp-3);
+}
+.rail-foot {
+  margin-top: auto;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+/* Rail nav item — v2 with sliding indicator */
+.rail-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-5);
+  border-radius: var(--r-md);
+  font-size: var(--fs-13);
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out-expo),
+              color var(--dur-fast) var(--ease-out-expo);
+}
+.rail-nav-item::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 2px;
+  height: 12px;
+  margin-top: -6px;
+  background: var(--accent);
+  border-radius: var(--r-xs);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.rail-nav-item:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.rail-nav-item.is-active {
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 600;
+}
+.rail-nav-item.is-active::before {
+  transform: scaleX(1);
+}
+
+.rail-nav-item .rail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-xs);
+  margin-right: var(--sp-3);
+  flex-shrink: 0;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.rail-nav-item:hover .rail-dot {
+  transform: scale(1.15);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+  position: relative;
+}
+.topbar {
+  padding: var(--sp-6) var(--sp-8) var(--sp-4);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--sp-6);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background-color: var(--bg);
+}
+.topbar-title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+.eyebrow {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+}
+.topbar-title h1 { margin: 0; }
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+}
+.content {
+  padding: var(--sp-7) var(--sp-8) var(--sp-9);
+  flex: 1;
+  min-width: 0;
+}
+.view-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+}
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .rail { display: none; }
+  .topbar,
+  .content {
+    padding-left: var(--sp-5);
+    padding-right: var(--sp-5);
+  }
+}

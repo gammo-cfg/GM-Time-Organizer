@@ -1,0 +1,139 @@
+/* =====================================================================
+   Command palette — Ctrl+K overlay with fuzzy search.
+   ===================================================================== */
+
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  z-index: var(--z-modal);
+  animation: palette-fade 150ms var(--ease);
+}
+[data-theme="light"] .palette-backdrop {
+  background: rgba(28, 27, 23, 0.28);
+}
+
+.palette {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  animation: palette-scale 180ms var(--ease);
+  display: flex;
+  flex-direction: column;
+  max-height: 66vh;
+}
+
+.palette-search {
+  padding: var(--sp-2) var(--sp-5);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.palette-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: var(--fs-15);
+  color: var(--text);
+  padding: var(--sp-3) 0;
+}
+.palette-search input::placeholder {
+  color: var(--text-faint);
+}
+
+.palette-kbd {
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  color: var(--text-faint);
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  border-bottom-width: 2px;
+  background: var(--surface);
+}
+
+.palette-results {
+  overflow-y: auto;
+  padding: var(--sp-2) 0;
+  flex: 1;
+}
+
+.palette-group-title {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+  padding: var(--sp-3) var(--sp-5) var(--sp-1);
+}
+
+.palette-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-5);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: var(--fs-13);
+  color: var(--text);
+  transition: background-color 100ms var(--ease);
+}
+.palette-item.is-highlighted {
+  background: var(--surface-2);
+}
+.palette-item-main {
+  flex: 1;
+  min-width: 0;
+}
+.palette-item-label {
+  font-size: var(--fs-13);
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-item-subtitle {
+  font-size: var(--fs-11);
+  color: var(--text-muted);
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-item-hint {
+  font-size: var(--fs-11);
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+.palette-empty {
+  padding: var(--sp-8) var(--sp-6);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--fs-13);
+}
+
+@keyframes palette-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes palette-scale {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}

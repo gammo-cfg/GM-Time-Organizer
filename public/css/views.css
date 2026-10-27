@@ -1,0 +1,57 @@
+/* =====================================================================
+   View scaffolding — v2. Adds a one-shot fade-up on view mount.
+   The animation fires when a fresh .view-stack is attached to the DOM;
+   it does NOT replay on re-render (the same .view-stack element persists).
+   ===================================================================== */
+
+.view-day,
+.view-week,
+.view-month {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.view-stack {
+  animation: view-mount 260ms var(--ease-out-expo);
+}
+
+@keyframes view-mount {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-2) 0;
+}
+.day-header-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-22);
+  letter-spacing: var(--ls-tight);
+  color: var(--text);
+  line-height: 1.15;
+}
+.day-header-sub {
+  font-size: var(--fs-12);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.day-header-actions {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+.timeline-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-5) var(--sp-6) var(--sp-5) 0;
+  overflow: hidden;
+  transition: border-color var(--dur-base) var(--ease-out-expo),
+              box-shadow var(--dur-base) var(--ease-out-expo);
+}

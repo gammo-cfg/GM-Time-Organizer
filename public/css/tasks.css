@@ -1,0 +1,192 @@
+/* =====================================================================
+   Tasks — v2.2. Adds drag-to-reorder visual states.
+   ===================================================================== */
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.task-section-title {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+  padding: var(--sp-4) var(--sp-2) var(--sp-2);
+  animation: fade-in 240ms var(--ease-out-expo);
+}
+.task-section-title:first-child { padding-top: var(--sp-2); }
+
+.task-row {
+  display: grid;
+  grid-template-columns: 22px 1fr auto auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  border-radius: var(--r-md);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: grab;
+  min-height: 38px;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  width: 100%;
+  transition: background-color var(--dur-fast) var(--ease-out-expo),
+              border-color var(--dur-fast) var(--ease-out-expo),
+              opacity var(--dur-slow) var(--ease-out-expo),
+              transform var(--dur-base) var(--ease-out-expo),
+              box-shadow var(--dur-base) var(--ease-out-expo);
+  animation: fade-in 240ms var(--ease-out-expo);
+}
+.task-row:hover {
+  background: var(--surface-2);
+  border-color: var(--border-soft);
+}
+.task-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.task-row.is-done { opacity: 0.55; }
+.task-row.is-done .task-title {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-faint);
+  color: var(--text-muted);
+  transition: color var(--dur-base) var(--ease-out-expo),
+              text-decoration-color var(--dur-base) var(--ease-out-expo);
+}
+.task-title {
+  transition: color var(--dur-base) var(--ease-out-expo);
+}
+
+/* Drag state */
+.task-row.is-dragging {
+  cursor: grabbing;
+  opacity: 0.65;
+  background: var(--surface);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: scale(1.01);
+  z-index: 10;
+  animation: none;
+  transition: transform var(--dur-base) var(--ease-out-expo),
+              box-shadow var(--dur-base) var(--ease-out-expo),
+              opacity var(--dur-fast) var(--ease-out-expo);
+}
+
+body.is-dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grabbing;
+}
+body.is-dragging .task-row {
+  cursor: grabbing;
+}
+
+/* Drop indicator line between rows */
+.task-drop-indicator {
+  height: 2px;
+  background: var(--accent);
+  border-radius: var(--r-pill);
+  margin: 3px var(--sp-4);
+  box-shadow: 0 0 0 2px var(--accent-bg);
+  animation: fade-in 120ms var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.task-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background-color var(--dur-fast) var(--ease-out-expo),
+              border-color var(--dur-fast) var(--ease-out-expo),
+              transform var(--dur-base) var(--ease-out-expo);
+}
+.task-check:active {
+  transform: scale(0.92);
+  transition-duration: var(--dur-ultra);
+}
+.task-check::after {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid var(--accent-fg);
+  border-bottom: 2px solid var(--accent-fg);
+  transform: rotate(-45deg) translateY(-1px) scale(0.5);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-spring),
+              transform var(--dur-base) var(--ease-spring);
+}
+.task-row.is-done .task-check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.task-row.is-done .task-check::after {
+  opacity: 1;
+  transform: rotate(-45deg) translateY(-1px) scale(1);
+}
+.task-check:hover { border-color: var(--accent); }
+
+.task-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+.task-title {
+  font-size: var(--fs-13);
+  color: var(--text);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.task-meta {
+  font-size: var(--fs-11);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  line-height: 1.3;
+}
+.task-meta .meta-sep {
+  width: 2px;
+  height: 2px;
+  background: var(--text-faint);
+  border-radius: var(--r-pill);
+  flex-shrink: 0;
+}
+.task-meta .due.overdue { color: var(--danger); font-weight: 600; }
+
+.task-priority {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  flex-shrink: 0;
+  background: transparent;
+}
+.task-priority.high   { background: var(--danger); }
+.task-priority.normal { background: var(--text-faint); }
+.task-priority.low    { background: transparent; }
+
+.task-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out-expo);
+}
+.task-row:hover .task-actions,
+.task-row:focus-within .task-actions { opacity: 1; }
+
+.task-actions .btn.icon.sm { width: 22px; height: 22px; font-size: var(--fs-12); }

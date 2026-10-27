@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Time Organizer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23C2582C'/%3E%3Cpath d='M10 11h12M10 16h12M10 21h8' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="preload" href="/fonts/fraunces-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/forms.css" />
+  <link rel="stylesheet" href="/css/ui.css" />
+  <link rel="stylesheet" href="/css/palette.css" />
+  <link rel="stylesheet" href="/css/timeline.css" />
+  <link rel="stylesheet" href="/css/views.css" />
+  <link rel="stylesheet" href="/css/week.css" />
+  <link rel="stylesheet" href="/css/month.css" />
+  <link rel="stylesheet" href="/css/tasks.css" />
+  <link rel="stylesheet" href="/css/habits.css" />
+  <link rel="stylesheet" href="/css/stats.css" />
+  <link rel="stylesheet" href="/css/templates.css" />
+  <link rel="stylesheet" href="/css/print.css" media="print" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <div class="app">
+    <aside class="rail">
+      <div class="rail-brand">
+        <span class="rail-mark"></span>
+        <span class="rail-name">Time</span>
+      </div>
+      <nav class="rail-nav" id="rail-nav">
+        <a class="rail-nav-item" data-route="/today" href="#/today">Today</a>
+        <a class="rail-nav-item" data-route="/day" href="#/day">Day</a>
+        <a class="rail-nav-item" data-route="/week" href="#/week">Week</a>
+        <a class="rail-nav-item" data-route="/month" href="#/month">Month</a>
+        <a class="rail-nav-item" data-route="/tasks" href="#/tasks">Tasks</a>
+        <a class="rail-nav-item" data-route="/habits" href="#/habits">Habits</a>
+        <a class="rail-nav-item" data-route="/stats" href="#/stats">Stats</a>
+      </nav>
+      <div class="rail-sep"></div>
+      <div class="rail-section-label">Categories</div>
+      <div class="rail-nav" id="rail-categories"></div>
+      <div class="rail-foot" id="rail-foot">
+        <a class="rail-nav-item" data-route="/blocks" href="#/blocks">Blocks</a>
+        <a class="rail-nav-item" data-route="/templates" href="#/templates">Templates</a>
+        <a class="rail-nav-item" data-route="/settings" href="#/settings">Settings</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar" id="topbar"></header>
+      <div class="content" id="outlet"></div>
+    </main>
+  </div>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

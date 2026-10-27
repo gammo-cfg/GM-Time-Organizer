@@ -1,0 +1,121 @@
+/* =====================================================================
+   Stats — v2. Card hover lift + smooth bar height transitions + counter.
+   ===================================================================== */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-4);
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-5) var(--sp-6) var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  min-height: 132px;
+  transition: border-color var(--dur-base) var(--ease-out-expo),
+              box-shadow var(--dur-slow) var(--ease-out-expo),
+              transform var(--dur-slow) var(--ease-out-expo);
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+.stat-label {
+  font-size: var(--fs-10);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-faint);
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-32);
+  letter-spacing: var(--ls-tight);
+  color: var(--text);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+.stat-value .stat-unit {
+  font-size: var(--fs-14);
+  color: var(--text-muted);
+  margin-left: 4px;
+  font-family: var(--font-body);
+  letter-spacing: 0;
+}
+.stat-trend {
+  font-size: var(--fs-11);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.stat-trend.up   { color: var(--success); }
+.stat-trend.down { color: var(--danger); }
+
+.stat-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 36px;
+  margin-top: auto;
+}
+.stat-chart .sc-bar {
+  flex: 1;
+  background: var(--accent-bg-strong);
+  border-radius: 2px 2px 0 0;
+  min-height: 3px;
+  transition: height var(--dur-slowest) var(--ease-out-expo),
+              background-color var(--dur-base) var(--ease-out-expo),
+              transform var(--dur-base) var(--ease-out-expo);
+}
+.stat-chart .sc-bar:hover { transform: scaleY(1.06); transform-origin: bottom; }
+.stat-chart .sc-bar.peak { background: var(--accent); }
+
+.stat-split {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+}
+.stat-split-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-12);
+}
+.stat-split-row .s-label {
+  flex: 1;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stat-split-row .s-bar-track {
+  flex: 0 0 80px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.stat-split-row .s-bar-fill {
+  height: 100%;
+  background: var(--c, var(--accent));
+  border-radius: var(--r-pill);
+  transition: width var(--dur-slowest) var(--ease-out-expo);
+}
+.stat-split-row .s-value {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  color: var(--text);
+  font-weight: 500;
+  width: 40px;
+  text-align: right;
+}

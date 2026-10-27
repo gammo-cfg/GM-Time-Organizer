@@ -1,0 +1,46 @@
+{
+  "name": "time-organizer",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Portable, offline, single-user time organizer for Windows. Hourly timeline, recurring blocks, tasks, habits, templates, and stats. Zero runtime dependencies.",
+  "author": "Chadli Jad",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "node server.js",
+    "electron": "electron .",
+    "build": "electron-builder --win --x64"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.0"
+  },
+  "build": {
+    "appId": "com.timeorganizer.app",
+    "productName": "TimeOrganizer",
+    "copyright": "Time Organizer",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "package.json",
+      "server.js",
+      "electron-main.js",
+      "lib/**/*",
+      "public/**/*"
+    ],
+    "asar": false,
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "dir",
+          "arch": ["x64"]
+        }
+      ]
+    }
+  },
+  "license": "UNLICENSED"
+}

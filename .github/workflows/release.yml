@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing release tag to attach the build to (e.g. v1.0.0)'
+        description: 'Existing release tag to attach the build to (e.g. v1.0.1)'
         required: true
-        default: 'v1.0.0'
+        default: 'v1.0.1'
 
 permissions:
   contents: write
@@ -25,6 +25,15 @@ jobs:
         with:
           ref: ${{ github.event.release.tag_name || github.event.inputs.tag }}
 
+      - name: Print checked-out commit
+        shell: pwsh
+        run: |
+          git log -1 --pretty=format:"%h %s"
+          Write-Host ""
+          Write-Host "productName in package.json:"
+          $pkg = Get-Content package.json -Raw | ConvertFrom-Json
+          Write-Host "  $($pkg.build.productName)"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -36,17 +45,24 @@ jobs:
       - name: Build portable Windows app
         run: npm run build
 
-      - name: Verify build output
+      - name: Verify build output (name-agnostic)
         shell: pwsh
         run: |
-          $exe = "dist/win-unpacked/GM-Time-Organizer.exe"
-          if (-not (Test-Path $exe)) {
-            Write-Error "Build did not produce $exe"
+          $exeDir = "dist/win-unpacked"
+          if (-not (Test-Path $exeDir)) {
+            Write-Error "Build did not produce $exeDir"
             exit 1
           }
-          $sizeMB = [math]::Round((Get-Item $exe).Length / 1MB, 1)
-          Write-Host "Built $exe ($sizeMB MB)"
-          Get-ChildItem "dist/win-unpacked" | Select-Object Name, Length | Format-Table -AutoSize
+          Write-Host "Contents of $exeDir :"
+          Get-ChildItem $exeDir | Select-Object Name, Length | Format-Table -AutoSize
+
+          $exes = @(Get-ChildItem "$exeDir/*.exe" -ErrorAction SilentlyContinue)
+          if ($exes.Count -eq 0) {
+            Write-Error "No .exe found in $exeDir"
+            exit 1
+          }
+          Write-Host "Found $($exes.Count) exe(s):"
+          $exes | ForEach-Object { Write-Host "  $($_.Name) ($([math]::Round($_.Length/1MB,1)) MB)" }
 
       - name: Package as portable ZIP
         shell: pwsh
